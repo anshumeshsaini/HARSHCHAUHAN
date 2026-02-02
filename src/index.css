@@ -1,0 +1,263 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '@fontsource/space-grotesk/400.css';
+@import '@fontsource/space-grotesk/500.css';
+@import '@fontsource/space-grotesk/600.css';
+@import '@fontsource/space-grotesk/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+
+/* Premium Portfolio Design System - White/Sand/Cyan */
+@layer base {
+  :root {
+    /* Core Palette - Dark Theme */
+    --background: 0 0% 3%;
+    --foreground: 0 0% 95%;
+    
+    /* Sand - Warm Neutral (darker for dark theme) */
+    --sand: 30 10% 10%;
+    --sand-dark: 30 8% 8%;
+    --sand-foreground: 36 20% 85%;
+    
+    /* Cyan Accent */
+    --accent: 189 94% 43%;
+    --accent-light: 189 94% 55%;
+    --accent-dark: 189 94% 35%;
+    --accent-foreground: 0 0% 100%;
+    
+    /* UI Colors */
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 189 94% 43%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 30 10% 12%;
+    --secondary-foreground: 36 20% 85%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 60%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 189 94% 43%;
+    --radius: 0.75rem;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.2);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.3), 0 2px 4px -2px hsl(0 0% 0% / 0.2);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.3), 0 4px 6px -4px hsl(0 0% 0% / 0.2);
+    --shadow-xl: 0 20px 25px -5px hsl(0 0% 0% / 0.4), 0 8px 10px -6px hsl(0 0% 0% / 0.3);
+    --shadow-cyan: 0 10px 40px -10px hsl(189 94% 43% / 0.4);
+    
+    /* Typography */
+    --font-display: 'Space Grotesk', system-ui, sans-serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    
+    /* Gradients */
+    --gradient-sand: linear-gradient(180deg, hsl(0 0% 3%) 0%, hsl(30 10% 10%) 100%);
+    --gradient-cyan-orb: radial-gradient(circle, hsl(189 94% 55% / 0.4) 0%, hsl(189 94% 43% / 0.1) 50%, transparent 70%);
+    --gradient-cyan-glow: radial-gradient(circle, hsl(189 94% 43% / 0.15) 0%, transparent 70%);
+    
+    /* Sidebar (keeping for shadcn) */
+    --sidebar-background: 0 0% 5%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 189 94% 43%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 30 10% 12%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 15%;
+    --sidebar-ring: 189 94% 43%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    @apply font-semibold tracking-tight;
+  }
+  
+  /* Custom selection */
+  ::selection {
+    @apply bg-accent/20 text-foreground;
+  }
+}
+
+@layer components {
+  /* Grain Texture Overlay */
+  .grain-texture {
+    position: relative;
+  }
+  
+  .grain-texture::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+    z-index: 1;
+  }
+  
+  /* Magnetic Button Base */
+  .btn-magnetic {
+    @apply relative inline-flex items-center justify-center px-8 py-4 font-display font-medium text-base transition-all duration-300;
+  }
+  
+  .btn-magnetic-primary {
+    @apply btn-magnetic bg-accent text-accent-foreground rounded-full;
+    box-shadow: var(--shadow-cyan);
+  }
+  
+  .btn-magnetic-primary:hover {
+    @apply scale-105;
+    box-shadow: 0 15px 50px -10px hsl(189 94% 43% / 0.45);
+  }
+  
+  .btn-magnetic-outline {
+    @apply btn-magnetic bg-transparent text-foreground border border-foreground/20 rounded-full;
+  }
+  
+  .btn-magnetic-outline:hover {
+    @apply border-accent text-accent scale-105;
+  }
+  
+  /* Card Hover Effects */
+  .card-lift {
+    @apply transition-all duration-500 ease-out;
+  }
+  
+  .card-lift:hover {
+    @apply -translate-y-2;
+    box-shadow: var(--shadow-xl);
+  }
+  
+  /* Animated Underline */
+  .underline-animate {
+    @apply relative;
+  }
+  
+  .underline-animate::after {
+    content: '';
+    @apply absolute bottom-0 left-0 w-0 h-0.5 bg-accent transition-all duration-300;
+  }
+  
+  .underline-animate:hover::after {
+    @apply w-full;
+  }
+  
+  /* Section Containers */
+  .section-dark {
+    @apply bg-background;
+  }
+  
+  .section-sand {
+    @apply bg-sand;
+  }
+  
+  /* Typography Styles */
+  .text-hero {
+    @apply text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-display font-bold leading-[1.05] tracking-tight;
+  }
+  
+  .text-section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-display font-semibold leading-tight;
+  }
+  
+  .text-body-large {
+    @apply text-lg md:text-xl text-muted-foreground leading-relaxed;
+  }
+  
+  /* Custom Cursor */
+  .cursor-ring {
+    @apply fixed pointer-events-none z-[9999] rounded-full border-2 border-accent mix-blend-difference;
+    width: 40px;
+    height: 40px;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, border-color 0.2s;
+  }
+  
+  .cursor-ring.hovering {
+    width: 60px;
+    height: 60px;
+    @apply border-accent/50;
+  }
+  
+  .cursor-dot {
+    @apply fixed pointer-events-none z-[9999] rounded-full bg-accent;
+    width: 8px;
+    height: 8px;
+    transform: translate(-50%, -50%);
+  }
+  
+  /* Floating WhatsApp Button */
+  .whatsapp-float {
+    @apply fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-accent text-accent-foreground flex items-center justify-center;
+    box-shadow: var(--shadow-cyan);
+    animation: pulse-cyan 2s infinite;
+  }
+  
+  @keyframes pulse-cyan {
+    0%, 100% {
+      box-shadow: 0 0 0 0 hsl(189 94% 43% / 0.4), var(--shadow-cyan);
+    }
+    50% {
+      box-shadow: 0 0 0 15px hsl(189 94% 43% / 0), var(--shadow-cyan);
+    }
+  }
+  
+  /* Progress Bar */
+  .progress-bar {
+    @apply relative h-2 bg-border rounded-full overflow-hidden;
+  }
+  
+  .progress-bar-fill {
+    @apply absolute left-0 top-0 h-full bg-accent rounded-full;
+    transition: width 1s ease-out;
+  }
+  
+  /* Stat Counter */
+  .stat-value {
+    @apply text-4xl md:text-5xl lg:text-6xl font-display font-bold text-accent;
+  }
+  
+  .stat-label {
+    @apply text-sm md:text-base text-muted-foreground font-medium uppercase tracking-wider mt-2;
+  }
+}
+
+@layer utilities {
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  
+  /* Text gradient */
+  .text-gradient-cyan {
+    @apply bg-gradient-to-r from-accent to-accent-light bg-clip-text text-transparent;
+  }
+  
+  /* Backdrop blur */
+  .backdrop-blur-nav {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+  }
+}
