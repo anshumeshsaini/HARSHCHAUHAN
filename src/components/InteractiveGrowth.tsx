@@ -1,159 +1,164 @@
-import { useState, useRef } from 'react';
-import { motion, useInView, AnimatePresence } from 'framer-motion';
-import { Zap, ArrowRight, RotateCw, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from "react";
+import { Player } from "@lottiefiles/react-lottie-player";
 
-const stages = [
-  {
-    id: 'traffic',
-    label: 'Traffic',
-    icon: Zap,
-    title: 'Attract The Right Eyes',
-    description: 'Targeted campaigns across Meta, Google, and emerging platforms. I find your audience where they actually spend time.',
-    details: ['Platform Selection', 'Audience Research', 'Creative Strategy', 'Budget Allocation'],
-  },
-  {
-    id: 'conversion',
-    label: 'Conversion',
-    icon: ArrowRight,
-    title: 'Turn Clicks Into Customers',
-    description: 'Optimized landing pages, compelling offers, and frictionless checkout flows. Every touchpoint engineered to convert.',
-    details: ['Funnel Architecture', 'A/B Testing', 'CRO Optimization', 'Offer Strategy'],
-  },
-  {
-    id: 'retention',
-    label: 'Retention',
-    icon: RotateCw,
-    title: 'Keep Them Coming Back',
-    description: 'Email sequences, loyalty programs, and personalized retargeting. The real profit is in repeat customers.',
-    details: ['Email Automation', 'Loyalty Systems', 'Personalization', 'Win-Back Campaigns'],
-  },
-  {
-    id: 'scale',
-    label: 'Scale',
-    icon: TrendingUp,
-    title: 'Multiply What Works',
-    description: 'Once the system proves ROI, we pour fuel on the fire. Systematic scaling with maintained efficiency.',
-    details: ['Performance Analysis', 'Budget Scaling', 'Channel Expansion', 'Team Processes'],
-  },
-];
+import traffic from "@/assets/animation/traffic.json";
+import scale from "@/assets/animation/scale.json";
+import retention from "@/assets/animation/retention.json";
+import Network from "@/assets/animation/conversion.json";
 
-const InteractiveGrowth = () => {
-  const [activeStage, setActiveStage] = useState(stages[0]);
-  const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: '-100px' });
+export const InteractiveGrowth = () => {
+  const [activeActivity, setActiveActivity] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const activities = [
+    {
+      title: "Attract The Right Eyes",
+      description:
+        "Targeted campaigns across Meta, Google, and emerging platforms. I find your audience where they actually spend time.",
+      lottieSrc: traffic,
+      mobSrc: traffic,
+    },
+    {
+      title: "Turn Clicks Into Customers",
+      description:
+        "Optimized landing pages, compelling offers, and frictionless checkout flows. Every touchpoint engineered to convert.",
+      lottieSrc: Network,
+      mobSrc: Network,
+    },
+    {
+      title: "Keep Them Coming Back",
+      description:
+        "Email sequences, loyalty programs, and personalized retargeting. The real profit is in repeat customers.",
+      lottieSrc: retention,
+      mobSrc: retention,
+    },
+    {
+      title: "Multiply What Works",
+      description:
+        "Once the system proves ROI, we pour fuel on the fire. Systematic scaling with maintained efficiency.",
+      lottieSrc: scale,
+      mobSrc: scale,
+    },
+  ];
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth < 768) return;
+    const interval = setInterval(() => {
+      setActiveActivity((prev) => (prev + 1) % activities.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section className="py-24 md:py-32 bg-black text-white overflow-hidden">
-      <div className="container mx-auto px-6 lg:px-12">
-        {/* Section Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            How I Build <span className="text-cyan-500">Growth</span>
+    <section className="bg-black py-20 lg:py-28 relative overflow-hidden">
+      {/* Cyan glow background */}
+      <div className="absolute top-0 left-0 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-3xl" />
+
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 relative z-10">
+        {/* ================= HEADER (MATCHES IMAGE) ================= */}
+        <div className="text-center mb-24">
+          
+
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold tracking-tight leading-tight">
+            <span className="text-white">How I Build </span>
+            <span className="relative text-cyan-500">
+              <span className="absolute inset-0 blur-2xl bg-cyan-500/30 -z-10" />
+              Growth
+            </span>
           </h2>
-          <p className="text-lg md:text-xl text-gray-300 max-w-2xl mx-auto">
-            A systematic approach to scaling brands. Click to explore each stage.
+          <p className="text-gray-400 text-sm sm:text-base mb-4">
+            Real results from real brands. Here's how I've helped businesses scale.
           </p>
-        </motion.div>
-        
-        <div ref={ref} className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Toggle Buttons */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col gap-3"
-          >
-            {stages.map((stage, index) => (
-              <motion.button
-                key={stage.id}
-                onClick={() => setActiveStage(stage)}
-                initial={{ opacity: 0, x: -20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ delay: 0.3 + index * 0.1 }}
-                className={`group flex items-center gap-4 p-5 rounded-2xl text-left transition-all duration-300 cursor-pointer ${
-                  activeStage.id === stage.id
-                    ? 'bg-cyan-500 text-black shadow-lg'
-                    : 'bg-gray-900 hover:bg-gray-800 text-white'
+        </div>
+
+        {/* ================= MOBILE VIEW ================= */}
+        <div className="md:hidden">
+          <div className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide">
+            {activities.map((activity, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 w-80 bg-white/5 backdrop-blur rounded-2xl border border-white/10 hover:border-cyan-500/40 transition"
+              >
+                <div className="h-72 flex items-center justify-center">
+                  {isLoaded ? (
+                    <Player autoplay loop src={activity.mobSrc} style={{ width: 240 }} />
+                  ) : (
+                    <div className="w-56 h-56 bg-white/10 rounded-lg animate-pulse" />
+                  )}
+                </div>
+
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-white mb-2">
+                    {activity.title}
+                  </h3>
+                  <p className="text-sm text-gray-300">
+                    {activity.description}
+                  </p>
+                  <div className="w-12 h-1 bg-cyan-500 rounded-full mt-4" />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-xs text-gray-400 mt-4">
+            Swipe to explore →
+          </p>
+        </div>
+
+        {/* ================= DESKTOP VIEW ================= */}
+        <div className="hidden md:grid md:grid-cols-2 gap-12">
+          {/* Animation */}
+          <div className="flex items-center justify-center">
+            <div className="w-full max-w-md h-80">
+              <Player
+                autoplay
+                loop
+                src={activities[activeActivity].lottieSrc}
+                className="w-full h-full"
+              />
+            </div>
+          </div>
+
+          {/* Steps */}
+          <div className="flex flex-col justify-center space-y-6">
+            {activities.map((activity, index) => (
+              <div
+                key={index}
+                onClick={() => setActiveActivity(index)}
+                className={`p-6 rounded-2xl cursor-pointer transition-all duration-300 border ${
+                  index === activeActivity
+                    ? "bg-cyan-500/10 border-cyan-500 shadow-[0_0_30px_rgba(6,182,212,0.25)]"
+                    : "bg-white/5 border-white/10 hover:border-cyan-500/40"
                 }`}
               >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-colors ${
-                  activeStage.id === stage.id ? 'bg-white/20' : 'bg-cyan-500/20'
-                }`}>
-                  <stage.icon className={`w-6 h-6 ${
-                    activeStage.id === stage.id ? 'text-white' : 'text-cyan-500'
-                  }`} />
-                </div>
-                
-                <div>
-                  <span className={`text-xs uppercase tracking-wider ${
-                    activeStage.id === stage.id ? 'text-white/70' : 'text-gray-400'
-                  }`}>
-                    Stage {index + 1}
-                  </span>
-                  <h3 className="text-lg font-semibold">{stage.label}</h3>
-                </div>
-                
-                <ArrowRight className={`w-5 h-5 ml-auto transition-transform ${
-                  activeStage.id === stage.id ? 'translate-x-1 text-white' : 'opacity-0 group-hover:opacity-50 text-gray-400'
-                }`} />
-              </motion.button>
-            ))}
-          </motion.div>
-          
-          {/* Content Display */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="relative"
-          >
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeStage.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-                className="bg-gray-900 rounded-3xl p-8 md:p-12"
-              >
-                <div className="w-16 h-16 rounded-2xl bg-cyan-500/20 flex items-center justify-center mb-6">
-                  <activeStage.icon className="w-8 h-8 text-cyan-500" />
-                </div>
-                
-                <h3 className="text-2xl md:text-3xl font-semibold mb-4 text-white">
-                  {activeStage.title}
+                <h3 className="text-lg font-semibold text-white mb-2">
+                  {activity.title}
                 </h3>
-                
-                <p className="text-gray-300 text-lg leading-relaxed mb-8">
-                  {activeStage.description}
+                <p className="text-sm text-gray-300">
+                  {activity.description}
                 </p>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  {activeStage.details.map((detail, index) => (
-                    <motion.div
-                      key={detail}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: index * 0.1 }}
-                      className="flex items-center gap-2 text-sm text-white"
-                    >
-                      <div className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
-                      {detail}
-                    </motion.div>
-                  ))}
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </motion.div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+
+      {/* Hide scrollbar */}
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </section>
   );
 };
-
-export default InteractiveGrowth;

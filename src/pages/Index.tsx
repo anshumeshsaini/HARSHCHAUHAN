@@ -4,7 +4,7 @@ import ScrollStory from '@/components/ScrollStory';
 import About from '@/components/About';
 import Services from '@/components/Services';
 import CaseStudies from '@/components/CaseStudies';
-import InteractiveGrowth from '@/components/InteractiveGrowth';
+import {InteractiveGrowth} from '@/components/InteractiveGrowth';
 import Skills from '@/components/Skills';
 import CTA from '@/components/CTA';
 import Footer from '@/components/Footer';
